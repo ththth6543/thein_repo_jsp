@@ -14,15 +14,9 @@
 </head>
 <body>
 	<div class="container py-4">
-		<header class="pb-3 mb-4 border-bottom">
-			<a href="./welcome.jsp"
-				class="d-flex align-items-center text-dark text-decoration-none">
-				<span class="material-symbols-outlined me-2">home</span> <span
-				class="fs-4">Home</span>
-			</a>
-		</header>
+		<%@ include file ="menu.jsp" %>
 
-		<%!String greeting = "Welcome to book Shopping Mall";
+		<%!String greeting = "도서 쇼핑몰에 오신 것을 환영합니다";
 	String tagline = "Welcome to Web Market";%>
 
 		<div class="p-5 mb-4 bg-body-tertiary rounded-3">
@@ -55,8 +49,7 @@
 			</div>
 		</div>
 
-		<footer class="pt-3 mt-4 text-body-secondary border-top">
-			&copy; BookMarket </footer>
+		<%@ include file ="footer.jsp" %>
 
 	</div>
 </body>
