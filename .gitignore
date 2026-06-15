@@ -1,0 +1,33 @@
+# Eclipse metadata and build files
+.metadata/
+.recommenders/
+bin/
+build/
+Servers/
+.settings/
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored project settings
+/project.properties
+
+# Log files
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# VS Code settings (optional, but recommended to ignore if user-specific)
+.vscode/
+
+# Compiled Java class files
+*.class
+
+# Package Files
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
