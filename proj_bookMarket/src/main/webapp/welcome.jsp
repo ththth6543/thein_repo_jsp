@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div class="container py-4">
-		<%@ include file ="menu.jsp" %>
+		<%@ include file="menu.jsp"%>
 
 		<%!String greeting = "도서 쇼핑몰에 오신 것을 환영합니다";
 	String tagline = "Welcome to Web Market";%>
@@ -31,6 +31,7 @@
 				<div class="h-100 p-5">
 					<h3><%=tagline%></h3>
 					<%
+					response.setIntHeader("Refresh", 5);
 					Date day = new java.util.Date();
 					String am_pm;
 					int hour = day.getHours();
@@ -49,7 +50,7 @@
 			</div>
 		</div>
 
-		<%@ include file ="footer.jsp" %>
+		<%@ include file="footer.jsp"%>
 
 	</div>
 </body>
