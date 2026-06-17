@@ -1,257 +1,303 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dynamic Welcome Page - Tomcat Deployment</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-glow: rgba(99, 102, 241, 0.15);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-pink: #f43f5e;
-            --accent-purple: #a855f7;
-            --accent-blue: #3b82f6;
-        }
+      :root {
+        --bg-gradient: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1e1b4b 50%,
+          #311042 100%
+        );
+        --glass-bg: rgba(255, 255, 255, 0.03);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-glow: rgba(99, 102, 241, 0.15);
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --accent-pink: #f43f5e;
+        --accent-purple: #a855f7;
+        --accent-blue: #3b82f6;
+      }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-            position: relative;
-        }
+      body {
+        font-family: "Outfit", sans-serif;
+        background: var(--bg-gradient);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden;
+        position: relative;
+      }
 
-        /* Ambient background glow effects */
-        .glow-sphere {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            z-index: 0;
-            pointer-events: none;
-            filter: blur(40px);
-        }
+      /* Ambient background glow effects */
+      .glow-sphere {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(99, 102, 241, 0.3) 0%,
+          rgba(0, 0, 0, 0) 70%
+        );
+        border-radius: 50%;
+        z-index: 0;
+        pointer-events: none;
+        filter: blur(40px);
+      }
 
-        .glow-1 {
-            top: -100px;
-            left: -100px;
-            animation: float-slow 15s infinite alternate;
-        }
+      .glow-1 {
+        top: -100px;
+        left: -100px;
+        animation: float-slow 15s infinite alternate;
+      }
 
-        .glow-2 {
-            bottom: -150px;
-            right: -100px;
-            animation: float-slow 20s infinite alternate-reverse;
-        }
+      .glow-2 {
+        bottom: -150px;
+        right: -100px;
+        animation: float-slow 20s infinite alternate-reverse;
+      }
 
-        @keyframes float-slow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 30px) scale(1.2); }
+      @keyframes float-slow {
+        0% {
+          transform: translate(0, 0) scale(1);
         }
+        100% {
+          transform: translate(50px, 30px) scale(1.2);
+        }
+      }
 
-        /* Container Card with Glassmorphism */
-        .card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 3rem 2.5rem;
-            width: 90%;
-            max-width: 580px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 var(--glass-border);
-            z-index: 10;
-            position: relative;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
-        }
+      /* Container Card with Glassmorphism */
+      .card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 3rem 2.5rem;
+        width: 90%;
+        max-width: 580px;
+        text-align: center;
+        box-shadow:
+          0 20px 50px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 var(--glass-border);
+        z-index: 10;
+        position: relative;
+        transition:
+          transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          box-shadow 0.4s ease;
+      }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 30px 60px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow:
+          0 30px 60px rgba(99, 102, 241, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      }
 
-        .icon-container {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 10px 25px rgba(244, 63, 94, 0.4);
-            animation: pulse-ring 3s infinite;
-        }
+      .icon-container {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-pink) 0%,
+          var(--accent-purple) 100%
+        );
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 10px 25px rgba(244, 63, 94, 0.4);
+        animation: pulse-ring 3s infinite;
+      }
 
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+      @keyframes pulse-ring {
+        0% {
+          box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7);
         }
+        70% {
+          box-shadow: 0 0 0 15px rgba(244, 63, 94, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(244, 63, 94, 0);
+        }
+      }
 
-        .icon-container svg {
-            width: 40px;
-            height: 40px;
-            fill: #ffffff;
-        }
+      .icon-container svg {
+        width: 40px;
+        height: 40px;
+        fill: #ffffff;
+      }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
-            background: linear-gradient(135deg, #ffffff 30%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.025em;
-        }
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+        background: linear-gradient(135deg, #ffffff 30%, #a855f7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.025em;
+      }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            color: #34d399;
-            padding: 0.35rem 0.85rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        color: #34d399;
+        padding: 0.35rem 0.85rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+      }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #10b981;
-            border-radius: 50%;
-            animation: blink 1.5s infinite;
-        }
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #10b981;
+        border-radius: 50%;
+        animation: blink 1.5s infinite;
+      }
 
-        @keyframes blink {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 0.4;
         }
+        50% {
+          opacity: 1;
+        }
+      }
 
-        p {
-            font-size: 1.05rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
+      p {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+      }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            text-align: left;
-        }
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        text-align: left;
+      }
 
-        .info-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 1rem;
-            border-radius: 12px;
-        }
+      .info-item {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 1rem;
+        border-radius: 12px;
+      }
 
-        .info-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            margin-bottom: 0.25rem;
-        }
+      .info-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+        margin-bottom: 0.25rem;
+      }
 
-        .info-value {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
+      .info-value {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(90deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(
+          90deg,
+          var(--accent-blue) 0%,
+          var(--accent-purple) 100%
+        );
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
-            filter: brightness(1.1);
-        }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        filter: brightness(1.1);
+      }
 
-        .btn:active {
-            transform: translateY(0);
-        }
+      .btn:active {
+        transform: translateY(0);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="glow-sphere glow-1"></div>
     <div class="glow-sphere glow-2"></div>
 
     <div class="card">
-        <div class="icon-container">
-            <!-- Simple server/tomcat-like SVG icon -->
-            <svg viewBox="0 0 24 24">
-                <path d="M4,17H20V15H4V17M4,13H20V11H4V13M4,9H20V7H4V9M2,4H22V20H2V4Z"/>
-            </svg>
+      <div class="icon-container">
+        <!-- Simple server/tomcat-like SVG icon -->
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M4,17H20V15H4V17M4,13H20V11H4V13M4,9H20V7H4V9M2,4H22V20H2V4Z"
+          />
+        </svg>
+      </div>
+
+      <h1>Tomcat Web Server</h1>
+
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span>성공적으로 배포됨 (Active)</span>
+      </div>
+
+      <p>
+        작성한 HTML 파일이 Apache Tomcat 웹 애플리케이션 컨텍스트 상에
+        성공적으로 배포되었습니다. 이 페이지는 Dynamic Web Project의 Web Content
+        루트 경로에서 실행 중입니다.
+      </p>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">배포 파일</div>
+          <div class="info-value">index.html</div>
         </div>
-
-        <h1>Tomcat Web Server</h1>
-        
-        <div class="status-badge">
-            <span class="status-dot"></span>
-            <span>성공적으로 배포됨 (Active)</span>
+        <div class="info-item">
+          <div class="info-label">Context Path</div>
+          <div class="info-value">/proj_st0615</div>
         </div>
+      </div>
 
-        <p>
-            작성한 HTML 파일이 Apache Tomcat 웹 애플리케이션 컨텍스트 상에 성공적으로 배포되었습니다.
-            이 페이지는 Dynamic Web Project의 Web Content 루트 경로에서 실행 중입니다.
-        </p>
-
-        <div class="info-grid">
-            <div class="info-item">
-                <div class="info-label">배포 파일</div>
-                <div class="info-value">index.html</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Context Path</div>
-                <div class="info-value">/proj_st0615</div>
-            </div>
-        </div>
-
-        <button class="btn" onclick="alert('Tomcat 배포 완료!')">환영합니다!</button>
+      <button class="btn" onclick="alert('Tomcat 배포 완료!')">
+        환영합니다!
+      </button>
     </div>
-</body>
+  </body>
 </html>

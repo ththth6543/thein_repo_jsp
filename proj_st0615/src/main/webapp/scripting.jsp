@@ -19,7 +19,8 @@
         out.println("java server pages " + i + ".<br>");
     }
     %>
-
     <%= makeItLower("Hello JSP!") %>
+
+    
 </body>
 </html>
