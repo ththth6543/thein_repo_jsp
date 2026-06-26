@@ -1,0 +1,28 @@
+
+CREATE TABLE IF NOT EXISTS book(
+	b_id VARCHAR(10) primary key,
+	b_name VARCHAR(20),
+	b_unitPrice  INTEGER,
+	b_author VARCHAR(20),
+	b_description TEXT,
+	b_publisher VARCHAR(20),
+   	b_category VARCHAR(20),	
+	b_unitsInStock Integer,
+	b_releaseDate   VARCHAR(20),
+	b_condition VARCHAR(20),
+	b_fileName  VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS book(
+    b_id VARCHAR(10) PRIMARY KEY,
+    b_name VARCHAR(20),
+    b_unitPrice INTEGER,
+    b_author VARCHAR(20),
+    b_description TEXT,
+    b_publisher VARCHAR(20),
+    b_category VARCHAR(20), 
+    b_unitsInStock INTEGER,
+    b_releaseDate VARCHAR(20),
+    b_condition VARCHAR(20),
+    b_fileName VARCHAR(20)
+);

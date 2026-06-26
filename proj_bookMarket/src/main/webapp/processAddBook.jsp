@@ -1,20 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="dto.Book"%>
-<%@ page import="dao.BookRepository"%>
+<%@ page contentType="text/html; charset=utf-8"%>
+<%@ page import="java.util.*"%>
 <%@ page import="com.oreilly.servlet.*"%>
-<%@ page import="com.oreilly.servlet.multiapart.*"%>
-
+<%@ page import="com.oreilly.servlet.multipart.*"%>
+<%@ page import="java.sql.*"%>
+<%@ include file="dbconn.jsp" %>
 
 <%
     request.setCharacterEncoding("UTF-8");
 
-    String filename="";
-    String realFolder = System.getProperty("user.dir");
-    realFolder = realFolder +/resources/images;
-    int maxSize = 10*1024*1024;
-    String enctype = "utf-8";
 
-    MultipartRequest multi = new MultipartRequest(request, realFolder, maxSize, enctype, new DefaultFileRenamePolicy());
+    String filename = "";
+
+    String realFolder = application.getRealPath("/resources/images");
+    String encType = "utf-8";
+    int maxSize = 12 * 1024 * 1024;
+
+    MultipartRequest multi = new MultipartRequest(request, realFolder, maxSize, encType, new DefaultFileRenamePolicy());
+
 
     String bookId = multi.getParameter("bookId");
     String name = multi.getParameter("name");
@@ -27,42 +29,48 @@
     String unitsInStock = multi.getParameter("unitsInStock");
     String condition = multi.getParameter("condition");
 
+    int price;
+
+    if (unitPrice.isEmpty())
+    price = 0;
+    else
+    price = Integer.valueOf(unitPrice);
+
+    long stock;
+
+    if (unitsInStock.isEmpty())
+    stock = 0;
+    else
+    stock = Long.valueOf(unitsInStock);
+
     Enumeration files = multi.getFileNames();
     String fname = (String) files.nextElement();
     String fileName = multi.getFilesystemName(fname);
 
-    Integer price;
+    PreparedStatement pstmt = null;
 
-    if (unitPrice.isEmpty()) {
-        price = 0;
-    } else {
-        price = Integer.valueOf(unitPrice);
-    }
+    String sql = "insert into book values(?,?,?,?,?,?,?,?,?,?,?)";
 
-    long stock;
 
-    if (unitsInStock.isEmpty()) {
-        stock = 0;
-    } else {
-        stock = Long.valueOf(unitsInStock);
-    }
+    pstmt = conn.prepareStatement(sql);
+    pstmt.setString(1, bookId);
+    pstmt.setString(2, name);
+    pstmt.setInt(3, price);
+    pstmt.setString(4, author);
+    pstmt.setString(5, description);
+    pstmt.setString(6, publisher);
+    pstmt.setString(7, category);
+    pstmt.setLong(8, stock);
+    pstmt.setString(9, releaseDate);
+    pstmt.setString(10, condition);
+    pstmt.setString(11, fileName);
+    pstmt.executeUpdate();
 
-    BookRepository dao = BookRepository.getInstance();
+    if (pstmt != null)
+    pstmt.close();
+    if (conn != null)
+    conn.close();
 
-    Book newBook = new Book();
-    newBook.setBookId(bookId);
-    newBook.setName(name);
-    newBook.setUnitPrice(price);
-    newBook.setAuthor(author);
-    newBook.setPublisher(publisher);
-    newBook.setReleaseDate(releaseDate);
-    newBook.setDescription(description);
-    newBook.setCategory(category);
-    newBook.setUnitsInStock(stock);
-    newBook.setCondition(condition);
-    newBook.setFilename(filename);
-
-    dao.addBook(newBook);
 
     response.sendRedirect("books.jsp");
 

@@ -17,7 +17,18 @@ public class Book implements Serializable {
 	private String releaseDate;
 	private String condition;
 	private String filename;
+	private int quantity;
 
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	
 	public Book() {
 		super();
 	}

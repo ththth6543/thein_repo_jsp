@@ -44,12 +44,12 @@ function CheckAddBook() {
         return false;
     }
 
-    function check(regExp, e, meg) {
+    function check(regExp, e, msg) {
         if(regExp.test(e.value)) {
-            return true
+            return true;
         }
         alert(msg);
-        e.focus;
+        e.focus();
         return false;
     }
 
